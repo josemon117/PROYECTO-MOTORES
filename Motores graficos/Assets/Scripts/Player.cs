@@ -108,7 +108,6 @@ public class Player : MonoBehaviour
         RecibioDaño = false;
     }
 
-
     private void UpdateAnimationState()
     {
         // Asigna un valor predeterminado a 'state' cuando la declaras
