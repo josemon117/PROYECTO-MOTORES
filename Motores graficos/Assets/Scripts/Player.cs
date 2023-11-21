@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class Player : MonoBehaviour
 {
@@ -29,6 +31,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        gameObject.SetActive(false);
         xInicial = transform.position.x;
         YInicial = transform.position.y;
         collisions = GetComponent<BoxCollider2D>();
@@ -69,7 +72,13 @@ public class Player : MonoBehaviour
             // Si el personaje no está sujeto a la pared, deshabilitar la sujeción.
             isHanging = false;
         }
-            UpdateAnimationState();
+        if (health <= 0)
+        {
+            // Implementa el código para manejar la muerte del jugador si la salud llega a cero o menos.
+            // Esto podría incluir la animación de muerte, reiniciar el nivel, etc.
+            MorirYReiniciar();
+        }
+        UpdateAnimationState();
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -136,6 +145,15 @@ public class Player : MonoBehaviour
         anim.SetInteger("MovementState", (int)state);
     
     }
+    void MorirYReiniciar()
+    {
+        // Aquí puedes poner cualquier lógica adicional antes de reiniciar, si es necesario.
+        Debug.Log("El jugador ha muerto. Reiniciando la escena del nivel 1.");
+
+        // Reinicia la escena del nivel 1
+        SceneManager.LoadScene("SampleScene");
+    }
+
 
 
     private bool isGrounded()
