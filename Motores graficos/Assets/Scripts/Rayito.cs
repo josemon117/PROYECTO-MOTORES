@@ -10,6 +10,7 @@ public class Rayito : MonoBehaviour
     void Start()
     {
         Invoke("ActivarPersonajeConDelay", Delay);
+        
     }
 
     // Función que se ejecutará después del retraso
@@ -17,5 +18,9 @@ public class Rayito : MonoBehaviour
     {
         // Activar el GameObject del personaje
         personaje.SetActive(true);
+    }
+    void DesactivarExplosion()
+    {
+        gameObject.SetActive(false);
     }
 }
