@@ -22,15 +22,18 @@ public class Player : MonoBehaviour
     private bool isHanging = false;
     private bool RecibioDaño = false;
     private bool isInvulnerable = false;
-
-
-
+    public GameObject balaPrefab;      // Asigna el prefab de la bala desde el Inspector de Unity
+    public Transform puntoDisparo;     // Asigna el punto de disparo desde el Inspector de Unity
+    public float tiempoEntreDisparos = 0.5f; // Tiempo en segundos entre cada disparo
+    private float tiempoUltimoDisparo; // Tiempo del último disparo
+    public UIManager uiManager;
 
 
     // Start is called before the first frame update
 
     void Start()
     {
+        ActualizarInterfaz();
         gameObject.SetActive(false);
         xInicial = transform.position.x;
         YInicial = transform.position.y;
@@ -39,11 +42,17 @@ public class Player : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         collision = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
+        tiempoUltimoDisparo = Time.time; // Inicializar el tiempo del último disparo
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButton("Fire1") && Time.time > tiempoUltimoDisparo + tiempoEntreDisparos)
+        {
+            Disparar();
+            tiempoUltimoDisparo = Time.time; // Actualizar el tiempo del último disparo
+        }
         dirX = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(dirX * MoveSpeed, rb.velocity.y);
         if (Input.GetButtonDown("Jump") && isGrounded())
@@ -81,10 +90,28 @@ public class Player : MonoBehaviour
         UpdateAnimationState();
     }
 
+    void Disparar()
+    {
+        
+        // Instanciar una nueva bala
+        GameObject nuevaBala = Instantiate(balaPrefab, puntoDisparo.position, Quaternion.identity);
+
+        // Configurar la velocidad de la bala según la orientación del personaje
+        Bala scriptBala = nuevaBala.GetComponent<Bala>();
+        if (scriptBala != null)
+        {
+            scriptBala.velocidad = 10f;  // Ajusta según sea necesario
+        }
+        // Actualizar la interfaz después de disparar
+        ActualizarInterfaz();
+    }
+
+
     void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Serpiente")&& isInvulnerable == false) // Asegúrate de que "Serpiente" sea la etiqueta de las serpientes.
+        if (collision.gameObject.CompareTag("Enemy")&& isInvulnerable == false) // Asegúrate de que "Serpiente" sea la etiqueta de las serpientes.
         {
+
             RecibioDaño = true;
             StartCoroutine(ResetRecibioDaño());
             // Hacer al jugador temporalmente invulnerable y cambiar su capa de colisión
@@ -108,6 +135,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(delay);
         isInvulnerable = false;
         gameObject.layer = LayerMask.NameToLayer("Player"); // Restablece la capa de colisión del jugador.
+        ActualizarInterfaz();
     }
 
     // Corrutina para restablecer RecibioDaño a false después de un tiempo.
@@ -151,7 +179,24 @@ public class Player : MonoBehaviour
         Debug.Log("El jugador ha muerto. Reiniciando la escena del nivel 1.");
 
         // Reinicia la escena del nivel 1
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Nivel 1");
+    }
+
+    void ActualizarInterfaz()
+    {
+        for (int i = 0; i < uiManager.corazones.Length; i++)
+        {
+            if (i < health)
+            {
+                // Corazón visible
+                uiManager.corazones[i].enabled = true;
+            }
+            else
+            {
+                // Corazón oculto
+                uiManager.corazones[i].enabled = false;
+            }
+        }
     }
 
 

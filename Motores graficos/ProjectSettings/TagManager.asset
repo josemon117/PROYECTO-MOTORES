@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Serpiente
+  - Enemy
+  - Wall
   layers:
   - Default
   - TransparentFX

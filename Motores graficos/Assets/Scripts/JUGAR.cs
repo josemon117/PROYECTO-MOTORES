@@ -7,6 +7,6 @@ public class JUGAR : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("SampleScene"); // Reemplaza "Level1" con el nombre de tu escena de nivel 1
+        SceneManager.LoadScene("Nivel 1"); // Reemplaza "Level1" con el nombre de tu escena de nivel 1
     }
 }
