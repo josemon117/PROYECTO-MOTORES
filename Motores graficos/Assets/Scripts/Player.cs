@@ -27,14 +27,20 @@ public class Player : MonoBehaviour
     public float tiempoEntreDisparos = 0.5f; // Tiempo en segundos entre cada disparo
     private float tiempoUltimoDisparo; // Tiempo del último disparo
     public UIManager uiManager;
+    public float Delay = .3f;
+
+    [SerializeField] private AudioClip saltoSonido;
 
 
     // Start is called before the first frame update
 
     void Start()
     {
+        Debug.Log("Inicia Start");
         ActualizarInterfaz();
         gameObject.SetActive(false);
+        
+
         xInicial = transform.position.x;
         YInicial = transform.position.y;
         collisions = GetComponent<BoxCollider2D>();
@@ -43,6 +49,7 @@ public class Player : MonoBehaviour
         collision = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
         tiempoUltimoDisparo = Time.time; // Inicializar el tiempo del último disparo
+        Invoke("ActivarPersonajeConDelay", Delay);
     }
 
     // Update is called once per frame
@@ -50,6 +57,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetButton("Fire1") && Time.time > tiempoUltimoDisparo + tiempoEntreDisparos)
         {
+            Debug.Log("Detecta Disparo");
             Disparar();
             tiempoUltimoDisparo = Time.time; // Actualizar el tiempo del último disparo
         }
@@ -57,7 +65,9 @@ public class Player : MonoBehaviour
         rb.velocity = new Vector2(dirX * MoveSpeed, rb.velocity.y);
         if (Input.GetButtonDown("Jump") && isGrounded())
         {
+            Debug.Log("Detecta Salto");
             rb.velocity = new Vector2(rb.velocity.x, JumpForce);
+            ControladorSonido.Instance.EjecutarSonido(saltoSonido);
         }
         bool isHittingCeiling = Physics2D.Raycast(transform.position, Vector2.up, 1f, JumpGround);
         if (isHittingCeiling && rb.velocity.y > 0)
@@ -85,9 +95,14 @@ public class Player : MonoBehaviour
         {
             // Implementa el código para manejar la muerte del jugador si la salud llega a cero o menos.
             // Esto podría incluir la animación de muerte, reiniciar el nivel, etc.
-            MorirYReiniciar();
+            //MorirYReiniciar();
         }
         UpdateAnimationState();
+    }
+    void ActivarPersonajeConDelay()
+    {
+        // Activar el GameObject del personaje
+        gameObject.SetActive(true);
     }
 
     void Disparar()
@@ -198,7 +213,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-
+ 
 
 
     private bool isGrounded()
