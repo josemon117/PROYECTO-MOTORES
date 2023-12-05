@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     private float tiempoUltimoDisparo; // Tiempo del último disparo
     public UIManager uiManager;
     public float Delay = .3f;
+    public Transform disparoOrigen;
 
     [SerializeField] private AudioClip saltoSonido;
 
@@ -55,6 +56,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
         if (Input.GetButton("Fire1") && Time.time > tiempoUltimoDisparo + tiempoEntreDisparos)
         {
             Debug.Log("Detecta Disparo");
@@ -110,13 +113,17 @@ public class Player : MonoBehaviour
         
         // Instanciar una nueva bala
         GameObject nuevaBala = Instantiate(balaPrefab, puntoDisparo.position, Quaternion.identity);
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
         // Configurar la velocidad de la bala según la orientación del personaje
         Bala scriptBala = nuevaBala.GetComponent<Bala>();
+        Mover scriptMover = nuevaBala.GetComponent<Mover>();
         if (scriptBala != null)
         {
             scriptBala.velocidad = 10f;  // Ajusta según sea necesario
         }
+        if (spriteRenderer.flipX == false ) scriptMover.direction = new Vector3(1, 0, 0);
+        else scriptMover.direction = new Vector3(-1, 0, 0);
         // Actualizar la interfaz después de disparar
         ActualizarInterfaz();
     }
@@ -145,6 +152,7 @@ public class Player : MonoBehaviour
         }
     }
 
+
     IEnumerator DisableInvulnerabilityAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -169,11 +177,13 @@ public class Player : MonoBehaviour
         {
             state = MovementState.running;
             sprite.flipX = false;
+            this.puntoDisparo.transform.localPosition = new Vector3(1.18f, 0f, 0f);
         }
         else if (dirX < 0 && RecibioDaño == false)
         {
             state = MovementState.running;
             sprite.flipX = true;
+            this.puntoDisparo.transform.localPosition = new Vector3(-1.18f,0f,0f);
         }
         if (!isGrounded() && RecibioDaño == false)
         {
@@ -187,6 +197,24 @@ public class Player : MonoBehaviour
 
         anim.SetInteger("MovementState", (int)state);
     
+    }
+
+    public void flipDerecha()
+    {
+
+        if (disparoOrigen != null)
+        {
+            disparoOrigen.transform.localPosition = new Vector3(1.18f, 0f, 0f);
+        }
+    }
+    public void flipIzquierda()
+    {
+
+        if (disparoOrigen != null)
+        {
+            Debug.Log("Cambia a izq");
+            disparoOrigen.transform.localPosition = new Vector3(-1.18f, 0f, 0f);
+        }
     }
     void MorirYReiniciar()
     {

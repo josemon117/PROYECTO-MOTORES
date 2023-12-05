@@ -14,7 +14,10 @@ GameObject:
   - component: {fileID: 1843315434964898823}
   - component: {fileID: 5089589731773825109}
   - component: {fileID: 6458612138910964538}
-  m_Layer: 0
+  - component: {fileID: -5587739143352463055}
+  - component: {fileID: 7805254327355567172}
+  - component: {fileID: -3312929896881746408}
+  m_Layer: 13
   m_Name: BalaPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidad: 5
   damage: 1
+  tiempoDeVida: 3
 --- !u!61 &6458612138910964538
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -195,3 +199,58 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.25962198, y: 0.1}
   m_EdgeRadius: 0
+--- !u!114 &-5587739143352463055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6153261521980908911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93d4f3227aca4624fa9a6ef3dffa81ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: {x: 1, y: 0, z: 0}
+  speed: 12
+--- !u!114 &7805254327355567172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6153261521980908911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84abbb92368173148acfb93ee9a24c84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsEnabled: 1
+  alwaysActions:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -3312929896881746408}
+        m_TargetAssemblyTypeName: DestroyObject, Assembly-CSharp
+        m_MethodName: DoDestroy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &-3312929896881746408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6153261521980908911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56e54a31bb27d714a8898623b5f262d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyTime: 0
