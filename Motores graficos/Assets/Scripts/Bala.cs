@@ -12,7 +12,7 @@ public class Bala : MonoBehaviour
     void Update()
     {
         // Mover la bala en la dirección hacia adelante
-        transform.Translate(Vector2.right * velocidad * Time.deltaTime);
+        //transform.Translate(Vector2.right * velocidad * Time.deltaTime);
         // Reducir el tiempo de vida de la bala
         tiempoDeVida -= Time.deltaTime;
         if (tiempoDeVida <= 0)
@@ -23,7 +23,7 @@ public class Bala : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Verificar si la bala impacta con un objeto
+        /*// Verificar si la bala impacta con un objeto
         if (other.CompareTag("Enemy"))
         {
             // Llamar a un método en el enemigo para infligir daño
@@ -36,6 +36,6 @@ public class Bala : MonoBehaviour
         {
             // Destruir la bala al impactar con un muro
             Destroy(gameObject);
-        }
+        }*/
     }
 }
